@@ -6,7 +6,7 @@ import { convertTimeRange, toCapitalize } from "./helper.js";
 const LevelMapping = {
     A1: "T1",
     A2: "T2",
-    A3: "T3",
+    B1: "T3",
 };
 const MAX_ATTEMPT = 5;
 
