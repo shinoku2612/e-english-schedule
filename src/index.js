@@ -1,9 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
 import getTeachingSchedule from "./get-schedule.js";
+import { pingToRender } from "./life-span-ping.js";
 
 const app = express();
 dotenv.config();
+
+pingToRender()
 
 app.get("/", async (req, res) => {
     const schedule = await getTeachingSchedule();
