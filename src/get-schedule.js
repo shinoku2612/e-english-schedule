@@ -8,9 +8,11 @@ const LevelMapping = {
     A2: "T2",
     A3: "T3",
 };
+const MAX_ATTEMPT = 5;
 
-export default async function getTeachingSchedule() {
+export default async function getTeachingSchedule(attempt = 0) {
     try {
+        attempt++;
         let accessToken = AppStore.get("accessToken");
         if (!accessToken) {
             accessToken = await getAccessToken();
@@ -26,7 +28,7 @@ export default async function getTeachingSchedule() {
                 },
             }
         );
-        if (!response.ok) throw Error(response.statusText);
+        if (!response.ok) throw Error(response.status);
         const data = await response.json();
 
         const responseData = data.map((lesson) => ({
@@ -37,7 +39,9 @@ export default async function getTeachingSchedule() {
         }));
         return responseData;
     } catch (error) {
-        console.log(error);
-        return null;
+        console.log(`[INVALID TOKEN]::[RETRY]::Attempt ${attempt}`)
+        AppStore.delete("accessToken");
+        if (attempt >= MAX_ATTEMPT) return null;
+        return getTeachingSchedule(attempt);
     }
 }
