@@ -1,5 +1,5 @@
 const AppStore = new Map();
 
-AppStore.set("accessToken", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcm5hbWUiOiJHTjQxMiIsImlkX3JvbGUiOjIsImZ1bGxuYW1lIjoiR2lhIE5naGkiLCJkaXNhYmxlIjpmYWxzZSwibGV2ZWwiOlsiQTEiLCJBMiIsIkIxIl0sImlhdCI6MTc2MjE3NzQ3MCwiZXhwIjoxNzYyMjYzODcwfQ.BiHFlk5t3Q92k09d-7NuRSo1QQSL_ClrBm7HYn8XXIs");
+AppStore.set("accessToken", null);
 
 export default AppStore;
