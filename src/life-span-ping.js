@@ -1,6 +1,9 @@
 export function pingToRender() {
     setInterval(() => {
-        const data = fetch(process.env.RENDER_PING_URL);
-        console.log({ data });
+        fetch(process.env.RENDER_PING_URL)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+            });
     }, 10000);
 }
