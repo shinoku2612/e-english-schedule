@@ -11,4 +11,10 @@ jobs:
     steps:
       - name: Curl Ping Endpoint
         run: |
-          curl -s -o /dev/null -w "%{http_code}" ${{ secrets.KEEP_ALIVE_URL }}
+          RESPONSE=$(curl -s -w "HTTP_STATUS:%{http_code}" ${{ secrets.KEEP_ALIVE_URL }})
+          echo "==== Ping Response ===="
+          echo "$RESPONSE"
+          STATUS=$(echo $RESPONSE | sed -n 's/.*HTTP_STATUS:\([0-9]*\)$/\1/p')
+          if [ "$STATUS" != "200" ]; then
+            echo "::warning ::Keep-alive ping failed. HTTP status: $STATUS"
+          fi
