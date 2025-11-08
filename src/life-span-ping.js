@@ -1,9 +1,12 @@
-export function pingToRender() {
-    setInterval(() => {
-        fetch(process.env.RENDER_PING_URL)
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-            });
-    }, 10000);
-}
+import { schedule } from "node-cron";
+
+const URL = process.env.KEEP_ALIVE_URL;
+
+schedule("*/10 * * * *", async () => {
+    try {
+        const res = await fetch(URL);
+        console.log(`[KeepAlive] Pinged: ${URL}, Status: ${res.status}`);
+    } catch (err) {
+        console.error("[KeepAlive] Ping failed:", err);
+    }
+});

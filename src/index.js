@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import getTeachingSchedule from "./get-schedule.js";
-import { pingToRender } from "./life-span-ping.js";
+import "./life-span-ping.js";
 
 const app = express();
 dotenv.config();
@@ -16,6 +16,5 @@ app.get("/ping", async (req, res) => {
 
 const runningPort = process.env.PORT || 3000;
 app.listen(runningPort, () => {
-    pingToRender();
     console.log("Server is running on port", runningPort);
 });
