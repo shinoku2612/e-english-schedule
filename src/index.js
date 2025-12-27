@@ -14,7 +14,8 @@ app.get("/", async (req, res) => {
   res.status(200).json(schedule);
 });
 app.get("/automation", async (req, res) => {
-  const schedule = await getAutoTeachingSchedule();
+  const { triggerDate } = req.query;
+  const schedule = await getAutoTeachingSchedule(triggerDate);
   res.status(200).json(schedule);
 });
 app.get("/ping", async (req, res) => {
