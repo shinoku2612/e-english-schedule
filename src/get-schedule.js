@@ -13,6 +13,11 @@ const LevelMapping = {
   A2: "T2",
   B1: "T3",
 };
+const StatusMapping = {
+  1: "Excused Absence",
+  2: "Missed Lesson",
+  3: "Unexcused Absence",
+};
 const MAX_ATTEMPT = 5;
 const TIME_SLOTS = [
   "08:00 - 09:00",
@@ -47,16 +52,17 @@ export async function getTeachingSchedule(attempt = 0) {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
     if (!response.ok) throw Error(response.status);
     const data = await response.json();
 
     const responseData = data.map((lesson) => ({
-      date: lesson.date,
-      time: convertTimeRange(lesson.time_start, lesson.time_end),
-      student: toCapitalize(lesson.student_name),
-      level: LevelMapping[lesson.level_student],
+      date: lesson.date ?? "",
+      time: convertTimeRange(lesson.time_start, lesson.time_end) ?? "",
+      student: toCapitalize(lesson.student_name) ?? "",
+      level: LevelMapping[lesson.level_student] ?? "",
+      status: StatusMapping[lesson.report_class] ?? "",
     }));
     return responseData;
   } catch (error) {
@@ -88,7 +94,7 @@ export async function getAutoTeachingSchedule(triggerDate) {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -102,11 +108,11 @@ export async function getAutoTeachingSchedule(triggerDate) {
 
       // Initialize EMPTY table: rows = time slots, cols = days
       const table = Array.from({ length: TIME_SLOTS.length }, () =>
-        Array.from({ length: 7 }, () => ["", "", ""])
+        Array.from({ length: 7 }, () => ["", "", ""]),
       );
 
       const timeIndex = Object.fromEntries(
-        TIME_SLOTS.map((slot, i) => [slot, i])
+        TIME_SLOTS.map((slot, i) => [slot, i]),
       );
 
       for (const lesson of data) {
